@@ -12,10 +12,10 @@ public class MenuUIHandler : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
 
-    // private void Start()
-    // {
-    //     scoreText.text = "Best Score: " + GameManager.Instance.playerName + ":" + GameManager.Instance.playerScore;
-    // }
+    //private void Start()  //Sacar barras cuando funcione todo y guardar todo
+    //{
+      //  GameManager.Instance.SaveInfo();
+    //}
     public void StarNew()
     {
         SceneManager.LoadScene(1);
