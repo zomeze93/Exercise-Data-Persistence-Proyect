@@ -31,13 +31,18 @@ public class GameManager : MonoBehaviour
     //         Debug.Log("Grabado nombre: " + playerNameText);
     //     }
     // }
-
+    
+    //private void OnApplicationQuit()
+    //{
+    //    SaveInfo(); // Guardar la mejor puntuación al cerrar el juego
+    //}
 
     [System.Serializable]
 class SaveData
 {
     public string playerName;
     public int playerScore;
+    public int bestScore;
 }
     public void SaveInfo()
     {
@@ -49,9 +54,9 @@ class SaveData
         SaveData data = new SaveData();
         data.playerName = Instance.playerNameText;
         data.playerScore = playerScore;
-
+        data.bestScore = bestScore;
+        
         string json = JsonUtility.ToJson(data);
-
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
         }
         else
@@ -69,9 +74,10 @@ class SaveData
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            playerBaneText = data.playerName;
+            playerNameText = data.playerName;
             playerScore = data.playerScore;
-
+            bestScore = data.bestScore;
+            
             if (playerName != null) playerName.text = playerNameText;
         }
     }
