@@ -43,9 +43,8 @@ public class MainManager : MonoBehaviour
         }
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.LoadInfo();
-            m_MaxPoints = GameManager.Instance.playerScore;
-            bestScoreText.text = $"Score : {GameManager.Instance.playerName}";
+           
+            bestScoreText.text = $"Score : {GameManager.Instance.playerNameText : GameManager.Instance.playerScore}";
             Debug.Log("Este es el nombre" + bestScoreText.text);
         }
         else
@@ -98,11 +97,14 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        if (m_Points > m_MaxPoints)
+        
+        if (m_Points > GameManager.Instance.bestScore)
             {
-            m_MaxPoints = m_Points;
-            GameManager.Instance.playerScore = m_MaxPoints;
-            bestScoreText.text = $"Best Score : {GameManager.Instance.playerName} : {m_MaxPoints}";
+            GameManager.Instance.bestScore = m_Points;
+            GameManager.Instance.playerScore = m_Points;
+            GameManager.Instance.playerNameText = GameManager.Instance.playerNameText;
+            
+            bestScoreText.text = $"Best Score : {GameManager.Instance.playerName} : {GameManager.Instance.bestScore}";
 
             GameManager.Instance.SaveInfo();
             }
