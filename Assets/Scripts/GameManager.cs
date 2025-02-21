@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public TMP_InputField playerName;
+    public string playerNameText = "";
     public int playerScore;
     private void Awake()
     {
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
     // {
     //     if (Input.GetKeyDown(KeyCode.Space))
     //     {
-    //         Debug.Log("Grabado nombre: " + playerName.text);
+    //         Debug.Log("Grabado nombre: " + playerNameText);
     //     }
     // }
 
@@ -42,10 +43,11 @@ class SaveData
     {
         if (playerName == null)
         {
-
+             Instance.playerNameText = playerName.text; // Guardar en una variable extra
+        }
 
         SaveData data = new SaveData();
-        data.playerName = playerName.text;
+        data.playerName = Instance.playerNameText;
         data.playerScore = playerScore;
 
         string json = JsonUtility.ToJson(data);
@@ -67,8 +69,10 @@ class SaveData
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            if (playerName != null) playerName.text = data.playerName;
+            playerBaneText = data.playerName;
             playerScore = data.playerScore;
+
+            if (playerName != null) playerName.text = playerNameText;
         }
     }
 
