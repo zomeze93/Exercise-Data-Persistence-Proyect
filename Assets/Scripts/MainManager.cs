@@ -40,13 +40,17 @@ public class MainManager : MonoBehaviour
             }
         }
 
-        m_Points = 0; // Reiniciar la puntuación al empezar
-        ScoreText.text = "Score : 0"; // Reiniciar la puntuación al empezar
-        if (GameManager.Instance != null)
-        {
+        GameManager.Instance.LoadInfo();
+        // if (GameManager.Instance != null)
+        // {
+        //     Debug.Log("NOmbre del jugador: " + GameManager.Instance.playerNameText);
+        //     Debug.Log("NOmbre del jugador.text: " + GameManager.Instance.playerName.text);
+            if (bestScoreText != null)
+            {
 
-            bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
-        }
+            bestScoreText.text = $"Best Score : {GameManager.Instance.bestPlayerNameText} : {GameManager.Instance.bestScore}";
+            }
+        // }
 
     }
 
@@ -64,10 +68,10 @@ public class MainManager : MonoBehaviour
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
 
-                if (m_Points > GameManager.Instance.bestScore)
-                {
-                    bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
-                }
+                // if (m_Points > GameManager.Instance.bestScore)
+                // {
+                //     bestScoreText.text = $"Best Score : {GameManager.Instance.bestPlayerNameText} : {GameManager.Instance.bestScore}";
+                // }
             }
         }
         else if (m_GameOver)
@@ -99,9 +103,11 @@ public class MainManager : MonoBehaviour
         {
             GameManager.Instance.bestScore = m_Points;
             GameManager.Instance.playerScore = m_Points;
-            GameManager.Instance.playerNameText = GameManager.Instance.playerNameText;
+            // GameManager.Instance.playerNameText = GameManager.Instance.playerName.text;
 
-            bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
+            GameManager.Instance.bestPlayerNameText = GameManager.Instance.playerNameText;
+
+            bestScoreText.text = $"Best Score : {GameManager.Instance.bestPlayerNameText} : {GameManager.Instance.bestScore}";
 
             GameManager.Instance.SaveInfo();
         }

@@ -19,15 +19,21 @@ public class MenuUIHandler : MonoBehaviour
     public void StarNew()
     {
         SceneManager.LoadScene(1);
-    }
-
-    public void newNameSelected(string name)
-    {
-        GameManager.Instance.playerName.text = name;
-    }
-
-    public void SaveNamePlay()
-    {
         GameManager.Instance.SaveInfo();
+
     }
+
+//     public void newNameSelected(string name)
+// {
+//     if (GameManager.Instance != null && GameManager.Instance.playerName != null)
+//     {
+//         GameManager.Instance.playerName.text = name;
+//         GameManager.Instance.playerNameText = name; // Guarda también en la variable de texto
+//     }
+// }
+
+    // public void SaveNamePlay()
+    // {
+    //     GameManager.Instance.SaveInfo();
+    // }
 }

@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
 
     public TMP_InputField playerName;
     public string playerNameText = "";
+    public string bestPlayerNameText = "";
+
     public int playerScore;
     public int bestScore;
     private void Awake()
@@ -33,13 +35,17 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         LoadInfo();
-
-        bestScoreText.text = $"Best Score : {playerNameText} : {bestScore}";
+        bestScoreText.text = $"Best Score : {bestPlayerNameText} : {bestScore}";
+    }
+    // borrar update
+    void Update()
+    {
+        Guardar();
     }
     private void OnApplicationQuit()
     {
         // ResetGameData();
-        // SaveInfo(); // Guardar la mejor puntuación al cerrar el juego
+        SaveInfo(); // Guardar la mejor puntuación al cerrar el juego
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode(); //para salir del modo play en unity
 #else
@@ -57,8 +63,18 @@ public class GameManager : MonoBehaviour
 
         // Resetear variables en memoria
         playerNameText = "";
+        bestPlayerNameText = "";
+        playerName.text = "";
         playerScore = 0;
         bestScore = 0;
+    }
+
+    public void Guardar()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SaveInfo();
+        }
     }
 
 
@@ -66,25 +82,28 @@ public class GameManager : MonoBehaviour
     class SaveData
     {
         public string playerName;
+        public string bestPlayerNameTextData;
         public int playerScore;
         public int bestScore;
     }
     public void SaveInfo()
+{
+    if (playerName != null)
     {
-        if (playerName != null)
-        {
-            Instance.playerNameText = playerName.text; // Guardar en una variable extra
-        }
-
-        SaveData data = new SaveData();
-        data.playerName = Instance.playerNameText;
-        data.playerScore = playerScore;
-        data.bestScore = bestScore;
-
-        string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-
+        playerNameText = playerName.text; // Solo guardar si playerName existe
     }
+    SaveData data = new SaveData();
+    // playerNameText = playerName.text; // Guarda el nombre del jugador
+    data.playerName = playerNameText; // Usa el nombre guardado en memoria
+    data.playerScore = playerScore;
+    data.bestScore = bestScore;
+    data.bestPlayerNameTextData = bestPlayerNameText; // Usa el nombre guardado en memoria
+
+    string json = JsonUtility.ToJson(data);
+    File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+
+    // Debug.Log("Datos guardados correctamente: " + json);
+}
 
 
     public void LoadInfo()
@@ -98,6 +117,8 @@ public class GameManager : MonoBehaviour
             playerNameText = data.playerName;
             playerScore = data.playerScore;
             bestScore = data.bestScore;
+            bestPlayerNameText = data.bestPlayerNameTextData;
+        // Debug.Log($"Datos cargados: Nombre: {playerNameText}, Puntuación: {playerScore}");
 
             if (playerName != null)
             {
