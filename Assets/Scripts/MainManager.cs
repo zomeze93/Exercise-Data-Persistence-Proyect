@@ -16,8 +16,7 @@ public class MainManager : MonoBehaviour
     public GameObject GameOverText;
 
     private bool m_Started = false;
-    [SerializeField]private int m_Points;
-    [SerializeField]private int m_MaxPoints;
+    private int m_Points;
 
     private bool m_GameOver = false;
 
@@ -25,7 +24,6 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(bestScoreText.text);
 
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -41,16 +39,15 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        m_Points = 0; // Reiniciar la puntuación al empezar
+        ScoreText.text = "Score : 0"; // Reiniciar la puntuación al empezar
         if (GameManager.Instance != null)
         {
-           
-            bestScoreText.text = $"Score : {GameManager.Instance.playerNameText : GameManager.Instance.playerScore}";
-            Debug.Log("Este es el nombre" + bestScoreText.text);
+
+            bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
         }
-        else
-        {
-            Debug.Log("No hay GameManager");
-        }
+
     }
 
     private void Update()
@@ -67,9 +64,9 @@ public class MainManager : MonoBehaviour
                 Ball.transform.SetParent(null);
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
 
-                if (m_MaxPoints > 0)
+                if (m_Points > GameManager.Instance.bestScore)
                 {
-                    bestScoreText.text = $"Best Score : {GameManager.Instance.playerName} : {m_MaxPoints}";
+                    bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
                 }
             }
         }
@@ -97,17 +94,17 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        
+
         if (m_Points > GameManager.Instance.bestScore)
-            {
+        {
             GameManager.Instance.bestScore = m_Points;
             GameManager.Instance.playerScore = m_Points;
             GameManager.Instance.playerNameText = GameManager.Instance.playerNameText;
-            
-            bestScoreText.text = $"Best Score : {GameManager.Instance.playerName} : {GameManager.Instance.bestScore}";
+
+            bestScoreText.text = $"Best Score : {GameManager.Instance.playerNameText} : {GameManager.Instance.bestScore}";
 
             GameManager.Instance.SaveInfo();
-            }
+        }
             // SceneManager.LoadScene(0);
     }
 }
